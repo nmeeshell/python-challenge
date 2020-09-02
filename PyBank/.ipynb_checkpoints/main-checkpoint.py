@@ -26,14 +26,18 @@ Avg_Change = sum(Profit_Change)/len(Profit_Change)
 
 total_months = len(Months)
 total_amount = sum(Profit_Losses)
+greatest_increase = round(max(Profit_Change),2)
+greatest_decrease = round(min(Profit_Change),2)
+greatest_increase_index = Profit_Change.index(greatest_increase) 
+greatest_decrease_index = Profit_Change.index(greatest_decrease) 
+
 
 
 print(f" Total Months: {total_months}")
 print(f" Total Amount: ${total_amount}") 
 print(f" Average Change: ${str(round(Avg_Change,2))}")  
-print(f" Greatest Increase in Profits: ${max(Profit_Losses)}") 
-print(f" Greatest Decrease in Profits: ${min(Profit_Losses)}") 
-
+print(f" Greatest Increase in Profits: {Months[greatest_increase_index +1]} ${max(Profit_Losses)}") 
+print(f" Greatest Decrease in Profits: {Months[greatest_decrease_index +1]} ${min(Profit_Losses)}") 
 
 
 # Greatest_Increase =
