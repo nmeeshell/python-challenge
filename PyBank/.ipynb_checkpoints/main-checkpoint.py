@@ -1,69 +1,61 @@
 import os
 import csv
+import sys
 
-#OUT_PATH = "budget_data.csv"
+sum_profits = 0
+months = []
+changes = []
+greatest_change = []
+negative_change = []
+count = 0
 
-path = os.path.join("Resources" , "budget_data.csv")
+in_path = os.path.join("Resources", "budget_data.csv")
+Output_Path = os.path.join("Analysis", "Analysis.txt")
 
-Months = []
-Profit_Losses = []
-Avg_Change = []
-Profit_Change = [] 
-
-with open(path,"r") as file:
-    csv_reader = csv.reader(file)
-    csv_header = next(csv_reader)
+with open(in_path, "r") as file:
+    print("file: ", file)
+    reader = csv.DictReader(file)
+    print("reader: ",reader)
     
-    for row in csv_reader:
-        Months.append(str(row[0]))
-        Profit_Losses.append(int(row[1])) 
-    
-for i in range(1, len(Profit_Losses)):
-    Profit_Change.append((int(Profit_Losses[i]) - int(Profit_Losses[i-1])))
+    for row in reader:
+        print(50 * "=")
+        print ("type(row): ",type(row))
+        print("row: ", row)
+        row_dict = dict(row)
+        print("row_dict: ", row_dict)
+        profit = row_dict["Profit/Losses"]
+        print("profit: ", profit)
+        print("type(profit): ", type(profit))
+        profit_float = float(profit)
+        print("profit_float: ", profit_float)
+        sum_profits += profit_float
+        print("sum_profits:", sum_profits)
+        count +=1
+        print ("count: ", count)
         
-Avg_Change = sum(Profit_Change)/len(Profit_Change) 
-    
+        
+print(50 * "=")
+print("sum_profits: ", sum_profits)
+print(changes)
+print(months)
 
-total_months = len(Months)
-total_amount = sum(Profit_Losses)
-greatest_increase = round(max(Profit_Change),2)
-greatest_decrease = round(min(Profit_Change),2)
-greatest_increase_index = Profit_Change.index(greatest_increase) 
-greatest_decrease_index = Profit_Change.index(greatest_decrease) 
+avg_profits = sum_profits / count
+print("avg_profits: ", avg_profits)
+greatest_change = int(input(changes)).max
+greatest_month = months[changes.index(greatest_change) +1] 
+negative_change = int(input(changes)).min
+negative_month = months[changes.index(negative_change) +1]
 
+output =(
+(f"Financial Analysis\n")
+(f"------------------\n")
+(f"Total months:{num_months}\n")
+(f"Total profit loss: ${total_profit_loss:,.2f}\n")
+(f"Average Change: ${avg_profits}")
+(f"Greatest Increase in Profits: {greatest_month} (${greatest_change:,.2f})\n")
+(f"Greatest Decrease in Profits: {negative_month} (${negative_change:,.2f})\n")
+)
 
+with open(file_to_output, "w") as txt_file:
+    txt_file.write(output) 
 
-print(f" Total Months: {total_months}")
-print(f" Total Amount: ${total_amount}") 
-print(f" Average Change: ${str(round(Avg_Change,2))}")  
-print(f" Greatest Increase in Profits: {Months[greatest_increase_index +1]} ${max(Profit_Losses)}") 
-print(f" Greatest Decrease in Profits: {Months[greatest_decrease_index +1]} ${min(Profit_Losses)}") 
-
-
-# Greatest_Increase =
-# Greatest_decrease = 
-    
-    # with open (OUT_PATH, "w+") as file:
-    
-#     # csv_writer = csv.DictWriter(file, 
-#                                [ "Profits" ,
-#                                  "Losses" ,
-#                                  "Months" ,
-#                                  "Years"])
-    
-#     #for row in data:
-        
-#         row = dict(row)
-        
-#         profits = int(row["Profits"])
-#         losses = int(row ["Losses"])
-#         date = int(row ["Date"])
-#         date = (row ["Date"])
-        
-#         total_number = profits + losses
-#         row["profits/losses"] = wins + losses / total_number
-        
-#        csv_writer.writerow(row)
-        
-        
-        
