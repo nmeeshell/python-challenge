@@ -1,61 +1,42 @@
 import os
 import csv
-import sys
 
-sum_profits = 0
+profit_losses = 0
 months = []
-changes = []
-greatest_change = []
-negative_change = []
-count = 0
+avg_change = []
+profit_change =[]
 
-in_path = os.path.join("Resources", "budget_data.csv")
+path = os.path.join("Resources", "budget_data.csv")
 Output_Path = os.path.join("Analysis", "Analysis.txt")
 
-with open(in_path, "r") as file:
-    print("file: ", file)
-    reader = csv.DictReader(file)
-    print("reader: ",reader)
+with open(path, "r") as file:
+    csv_reader = csv.DictReader(file)
+    next(csv_reader)
     
-    for row in reader:
-        print(50 * "=")
-        print ("type(row): ",type(row))
-        print("row: ", row)
-        row_dict = dict(row)
-        print("row_dict: ", row_dict)
-        profit = row_dict["Profit/Losses"]
-        print("profit: ", profit)
-        print("type(profit): ", type(profit))
-        profit_float = float(profit)
-        print("profit_float: ", profit_float)
-        sum_profits += profit_float
-        print("sum_profits:", sum_profits)
-        count +=1
-        print ("count: ", count)
-        
-        
-print(50 * "=")
-print("sum_profits: ", sum_profits)
-print(changes)
-print(months)
+    for row in csv_reader:
+        months.append(str(row[0]))
+        profit_losses.append(int(row[1]))
 
-avg_profits = sum_profits / count
-print("avg_profits: ", avg_profits)
-greatest_change = int(input(changes)).max
-greatest_month = months[changes.index(greatest_change) +1] 
-negative_change = int(input(changes)).min
-negative_month = months[changes.index(negative_change) +1]
+for i in range(1, len(profit_losses)):
+    profit_change.append(int(profit_losses[i]) - int(profit_losses[i-1]))
+    
+avg_change = sum(profit_change)/len(profit_change)
+
+
+total_months = len(months)
+total_amount = sum(profit_losses)
+greatest_increase_index = months[profit_change.index(greatest_increase) +1]
+greatest_decrease_index = months[profit_change.index(greatest_decrease)+1] 
 
 output =(
-(f"Financial Analysis\n")
-(f"------------------\n")
-(f"Total months:{num_months}\n")
-(f"Total profit loss: ${total_profit_loss:,.2f}\n")
-(f"Average Change: ${avg_profits}")
-(f"Greatest Increase in Profits: {greatest_month} (${greatest_change:,.2f})\n")
-(f"Greatest Decrease in Profits: {negative_month} (${negative_change:,.2f})\n")
-)
+f"total months:{total_months}\n"
+f"Total amount: ${total_amount}\n"
+f"Average Change: ${str(round(avg_change,2))}\n"
+f"Greatest Increase in Profits: {greatest_increase_index} ${greatest_increase}\n"
+f"Greatest Decrease in Profits: {greatest_decrease_index} (${greatest_decrease})\n")
 
-with open(file_to_output, "w") as txt_file:
+print(output)
+
+with open(Out_Path, "w") as txt_file:
     txt_file.write(output) 
 
